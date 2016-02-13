@@ -6,6 +6,7 @@
 - 打开mysql（命令行或GUI客户端），执行config目录下的**dream.sql**脚本，构建数据库。
 
 >如果你使用mysql命令行。你可以在shell的config目录中，打开mysql CLI：
+
 ```shell
 mysql -u用户名 -p
 ```
