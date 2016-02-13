@@ -1,0 +1,11 @@
+* {
+	margin:0;
+	padding: 0;
+}
+body {
+	background-color: #f80;
+}
+table {
+	border-collapse:  separate;
+	border-spacing: 10px;
+}

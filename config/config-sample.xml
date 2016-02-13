@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configure>
+	<!-- record basic configure information of database -->
+	<dbinfo>
+		<hostname>127.0.0.1</hostname>
+		<username>root</username>
+		<password>123456</password>
+		<database>dbname</database>
+	</dbinfo>
+</configure>

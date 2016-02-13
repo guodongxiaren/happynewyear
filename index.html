@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>愿望清单</title>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width" />
+
+	<script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+	<script type="text/javascript" src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>
+	<script src="http://rawgit.com/guodongxiaren/wang.js/master/wang.js"></script>
+
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/style.css">
+
+</head>
+<body onload="queryAddress()">
+<marquee behavior="scroll" direction="right"><img src="imgs/roll_monkey.gif"> </marquee>
+
+<div align="center" id="wrap">
+	<h2><strong>欢迎来自<span id="city"></span>的你</strong></h2>
+	<h3>使用愿望清单</h3>	    
+<form id="myform">
+	<table>
+	<tr>
+		<td>
+			<label for="exampleInputEmail1" id="lableemail">电子邮件</label>
+		</td>
+		<td>
+			<input type="email" class="form-control" id="email" placeholder="必填">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label for="exampleInputEmail1">手机号码</label>
+		</td>
+		<td>
+			<input type="phone" class="form-control" id="phone" placeholder="选填">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label id="labelmessage">写下你的愿望</label>
+		</td>
+		<td>
+			<textarea class="form-control" rows="4" id="message"></textarea>
+			</td>
+	</tr>	
+	<tr>
+		<td>
+			<input type="button" class="btn btn-large btn-block btn-primary" onclick="mysubmit()" value="发送">
+		</td>
+	</tr>
+	</table>
+</form>
+	<h4>一年后将通过邮件将你现在的愿望发送给你</h4>
+
+</div>
+
+<script type="text/javascript">
+function mysubmit() {
+	var email = $("#email").val();
+	email = $.trim(email);
+	if ( email == "" || !checkMail(email) ) {
+		alert("请输入有效邮件地址");
+		// return;
+		$("#lableemail").css("color", "red");
+		$("#email").focus();
+		return;
+	}
+	
+	var phone = $("#phone").val();
+	phone = $.trim(phone);
+	if ( phone != "" && !checkMobile(phone) ) {
+		alert("请输入合法手机号，或者不填");
+		$("phone").focus();
+		return;
+	}
+	
+	var message = $("#message").val();
+	message = $.trim(message);
+	console.log(message.length);
+	if ( message == "" ) {
+		alert("您输入的愿望信息为空");
+		$("#labelmessage").css("color", "red");
+		$("message").focus();
+		return;
+	} else if (message.length > 280) {
+		alert("字数限制140字");
+		$("#labelmessage").css("color", "red");
+		$("message").focus();
+		return;
+	}
+
+	var time = getNow2Str();
+	// console.log(time);
+	var province = remote_ip_info['province'];
+	var city = remote_ip_info['city'];
+
+	$.ajax({
+		type: "post",
+		url:  "./dream.php",
+		data: {"email": email, "phone":phone, "message":message, "province":province, "city":city, "time":time},
+		success: function(o) {
+			console.log(o);
+			if ($.trim(o) == "ok") {
+				alert("您的愿望已经发送，感谢使用");
+				$("#myform")[0].reset();
+			}
+			else {
+				alert("Sorry，出了点问题，请刷新或稍后使用");
+			}
+		}
+	});
+}
+
+function queryAddress() {
+	var city = remote_ip_info['city'];
+	$("#city").html(city);
+}
+</script>
+</body>
+</html>
